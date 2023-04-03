@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 
 import {
   Form,
@@ -27,6 +28,14 @@ const ContactFormSchema = Yup.object().shape({
 });
 
 export const ContactForm = ({ onAddContact }) => {
+const dispatch = useDispatch();
+
+
+
+
+  
+  
+
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
@@ -48,6 +57,7 @@ export const ContactForm = ({ onAddContact }) => {
           <Field type="tel" name="number" />
           <ErrorMessage name="number" component="p" />
         </FormField>
+
         <AddContactBtn type="submit">Add contact</AddContactBtn>
       </Form>
     </Formik>

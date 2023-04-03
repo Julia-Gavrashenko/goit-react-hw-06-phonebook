@@ -39,7 +39,7 @@ export const App = () => {
 
   const deleteContact = contactId => {
     setContacts(prevState =>
-      prevState.filter(contact => contact.id !== contactId)
+      prevState.filter(contact => contact!== contactId)
     );
   };
 
