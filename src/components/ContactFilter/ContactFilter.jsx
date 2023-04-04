@@ -1,22 +1,26 @@
-// import PropTypes from 'prop-types';
-// import {
-//   FilterLabel,
-//   FilterContainer,
-//   FilterField,
-// } from './ContactFilter.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilteredContacts } from 'redux/filterSlice/filterSlice';
 
-// export const ContactFilter = ({ filter, onChange }) => {
-//   return (
-//     <FilterContainer>
-//       <FilterLabel>
-//         Find Contacts by name
-//         <FilterField type="text" value={filter} onChange={onChange} />
-//       </FilterLabel>
-//     </FilterContainer>
-//   );
-// };
+import {
+  FilterLabel,
+  FilterContainer,
+  FilterField,
+} from './ContactFilter.styled';
 
-// ContactFilter.propTypes = {
-//   filter: PropTypes.string.isRequired,
-//   onChange: PropTypes.func.isRequired,
-// };
+export const ContactFilter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter.value);
+
+  const changeFilter = event => {
+    dispatch(getFilteredContacts(event.currentTarget.value));
+  };
+
+  return (
+    <FilterContainer>
+      <FilterLabel>
+        Find Contacts by name
+        <FilterField type="text" value={filter} onChange={changeFilter} />
+      </FilterLabel>
+    </FilterContainer>
+  );
+};

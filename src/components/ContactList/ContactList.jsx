@@ -1,31 +1,29 @@
-// import PropTypes from 'prop-types';
-// import { ContactItem } from 'components/ContactItem/ContactItem';
-// import { ContactContainer, List } from './ContactList.styled';
-// import { nanoid } from 'nanoid';
+import { ContactItem } from 'components/ContactItem/ContactItem';
+import { ContactContainer, List } from './ContactList.styled';
+import { nanoid } from 'nanoid';
+import { useSelector } from 'react-redux';
 
-// export const ContactList = ({ contacts, onDeleteContact }) => {
-//   return (
-//     <ContactContainer>
-//       <List>
-//         {contacts.map(contact => (
-//           <ContactItem
-//             key={nanoid()}
-//             info={contact}
-//             onDeleteContact={onDeleteContact}
-//           ></ContactItem>
-//         ))}
-//       </List>
-//     </ContactContainer>
-//   );
-// };
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.filter.value);
 
-// ContactList.propTypes = {
-//   contacts: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       number: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-//   onDeleteContact: PropTypes.func.isRequired,
-// };
+  const getFilteredContacts = () => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(
+      contact =>
+        contact.name && contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  const filteredContacts = getFilteredContacts();
+
+  return (
+    <ContactContainer>
+      <List>
+        {filteredContacts.map(contact => (
+          <ContactItem key={nanoid()} info={contact}></ContactItem>
+        ))}
+      </List>
+    </ContactContainer>
+  );
+};

@@ -1,9 +1,7 @@
-// import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-// import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact} from 'redux/contactsSlice/contactsSlice';
+import { addContact } from 'redux/contactsSlice/contactsSlice';
 
 import {
   Form,
@@ -32,23 +30,26 @@ export const ContactForm = () => {
   const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
 
-  const handleSubmit = (newContact) => {
+  const handleSubmit = newContact => {
+    const normalizedContactName = newContact.name.toLowerCase();
     const existedContact = contacts.find(
-      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+      contact =>
+        contact.name && contact.name.toLowerCase() === normalizedContactName
     );
 
     existedContact
       ? alert('This contact is already in contacts.')
-      : dispatch(addContact({newContact }));
-
-  
+      : dispatch(addContact(newContact));
   };
 
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
       validationSchema={ContactFormSchema}
-      onSubmit={handleSubmit}
+      onSubmit={(values, actions) => {
+        handleSubmit(values);
+        actions.resetForm();
+      }}
     >
       <Form>
         <FormField>
@@ -59,7 +60,7 @@ export const ContactForm = () => {
 
         <FormField>
           Number
-          <Field type="tel" name="number"/>
+          <Field type="tel" name="number" />
           <ErrorMessage name="number" component="p" />
         </FormField>
 
@@ -68,7 +69,3 @@ export const ContactForm = () => {
     </Formik>
   );
 };
-
-// ContactForm.propTypes = {
-//   onAddContact: PropTypes.func.isRequired,
-// };
